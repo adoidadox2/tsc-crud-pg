@@ -1,0 +1,25 @@
+{
+  "name": "tsc-crud-pg",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/adoidadox2/tsc-crud-pg.git",
+  "author": "adoidadox2 <augusto.geek@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev:server": "ts-node-dev --respawn --transpileOnly --ignore-watch node_modules src/server.ts",
+    "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.6",
+    "@types/node": "^14.0.13",
+    "ts-node-dev": "^1.0.0-pre.49",
+    "typescript": "^3.9.5"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "pg": "^8.2.1",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.2.25"
+  }
+}
