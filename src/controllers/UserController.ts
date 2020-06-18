@@ -11,7 +11,13 @@ class UserController {
     return res.json(users);
   }
   async store(req: Request, res: Response): Promise<Response> {
-    return res.json();
+    const repo = getRepository(User);
+
+    const user = repo.create(req.body);
+
+    await repo.save(user);
+
+    return res.json(user);
   }
   async show(req: Request, res: Response): Promise<Response> {
     return res.json();
