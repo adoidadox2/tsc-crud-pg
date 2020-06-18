@@ -31,17 +31,17 @@ export default class CreateUser1592416194369 implements MigrationInterface {
             isNullable: false,
           },
           {
-            name: "created_At",
+            name: "created_at",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: "updated_At",
+            name: "updated_at",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: "deleted_At",
+            name: "deleted_at",
             type: "timestamp",
             isNullable: true,
           },
