@@ -7,8 +7,8 @@ import {
   DeleteDateColumn,
 } from "typeorm";
 
-@Entity("user")
-export default class User {
+@Entity("post")
+export default class Post {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 

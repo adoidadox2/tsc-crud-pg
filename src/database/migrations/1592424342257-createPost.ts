@@ -46,6 +46,6 @@ export default class CreatePost1592424342257 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("user");
+    await queryRunner.dropTable("post");
   }
 }

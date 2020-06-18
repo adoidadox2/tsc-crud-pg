@@ -7,8 +7,8 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("post")
-export default class Post {
+@Entity("user")
+export default class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -17,6 +17,8 @@ export default class Post {
 
   @Column()
   username: string;
+
+  password: string;
 
   @Column()
   password_hash: string;
