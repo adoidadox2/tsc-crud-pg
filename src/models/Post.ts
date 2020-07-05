@@ -15,7 +15,6 @@ export default class Post {
   id: string;
 
   @Column({
-    unique: true,
     nullable: false,
   })
   title: string;

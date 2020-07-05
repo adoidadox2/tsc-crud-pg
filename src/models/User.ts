@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   OneToMany,
+  BeforeUpdate,
 } from "typeorm";
 
 import bcrypt from "bcrypt";
@@ -29,7 +30,6 @@ export default class User {
 
   @Column({
     nullable: false,
-    unique: true,
   })
   username: string;
 

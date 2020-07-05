@@ -16,6 +16,10 @@ class UserController {
 
     const { name, username, password } = req.body;
 
+    if (await repo.findOne({ where: { username } })) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+
     const user = repo.createUser(name, username, password);
 
     await repo.save(user);
@@ -25,12 +29,51 @@ class UserController {
     return res.json(user);
   }
   async show(req: Request, res: Response): Promise<Response> {
-    return res.json();
+    const repo = getCustomRepository(UserRepository);
+
+    const id = req.params.id;
+
+    const user = await repo.findOne({ where: { id } });
+
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    return res.json(user);
   }
   async update(req: Request, res: Response): Promise<Response> {
-    return res.json();
+    const repo = getCustomRepository(UserRepository);
+
+    const id = req.params.id;
+    const { name, username, password } = req.body;
+
+    const user = await repo.findOne({ where: { id } });
+
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    user.name = name;
+    user.username = username;
+    user.password = password;
+
+    await repo.save(user);
+
+    return res.json(user);
   }
   async delete(req: Request, res: Response): Promise<Response> {
+    const repo = getCustomRepository(UserRepository);
+
+    const id = req.params.id;
+
+    const user = await repo.findOne({ where: { id } });
+
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    await repo.softRemove(user);
+
     return res.json();
   }
 }
