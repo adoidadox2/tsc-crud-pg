@@ -6,9 +6,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
+  OneToMany,
 } from "typeorm";
 
 import bcrypt from "bcrypt";
+import Post from "./Post";
 @Entity("user")
 export default class User {
   constructor(name: string, username: string, password: string) {
@@ -20,11 +22,26 @@ export default class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   name: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+    unique: true,
+  })
   username: string;
+
+  @Column({
+    nullable: false,
+  })
+  password_hash: string;
+
+  password: string | null;
+
+  @OneToMany((type) => Post, (user) => User)
+  posts: Post[];
 
   @CreateDateColumn()
   created_at: Date;
@@ -34,11 +51,6 @@ export default class User {
 
   @DeleteDateColumn()
   deleted_at: Date;
-
-  @Column()
-  password_hash: string;
-
-  password: string;
 
   @BeforeInsert()
   async upPass() {

@@ -5,18 +5,28 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
 } from "typeorm";
+import User from "./User";
 
 @Entity("post")
 export default class Post {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
+  @Column({
+    unique: true,
+    nullable: false,
+  })
   title: string;
 
-  @Column()
+  @Column({
+    nullable: false,
+  })
   content: string;
+
+  @ManyToOne((type) => User, (posts) => Post)
+  user: User;
 
   @CreateDateColumn()
   created_at: Date;
