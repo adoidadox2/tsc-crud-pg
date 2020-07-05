@@ -25,7 +25,10 @@ export default class Post {
   })
   content: string;
 
-  @ManyToOne((type) => User, (posts) => Post)
+  @ManyToOne((type) => User, (posts) => Post, {
+    nullable: false,
+    cascade: ["update", "remove", "soft-remove"],
+  })
   user: User;
 
   @CreateDateColumn()
