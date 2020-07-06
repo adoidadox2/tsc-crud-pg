@@ -7,9 +7,9 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   OneToMany,
-  BeforeUpdate,
 } from "typeorm";
 
+import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import Post from "./Post";
 @Entity("user")
@@ -56,5 +56,15 @@ export default class User {
   async upPass() {
     this.password_hash = await bcrypt.hash(this.password, 8);
     this.password = null;
+  }
+
+  checkPassword(password: String) {
+    return bcrypt.compare(password, this.password_hash);
+  }
+
+  generateToken() {
+    return jwt.sign({ id: this.id }, "tsc", {
+      expiresIn: "1d",
+    });
   }
 }

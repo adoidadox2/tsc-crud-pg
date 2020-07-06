@@ -2,8 +2,11 @@ import { Router } from "express";
 
 import handle from "express-async-handler";
 import PostController from "../controllers/PostController";
+import auth from "../middlewares/auth";
 
 const postRouter = Router();
+
+postRouter.use(auth);
 
 postRouter.post("/", handle(PostController.store));
 postRouter.get("/", handle(PostController.index));

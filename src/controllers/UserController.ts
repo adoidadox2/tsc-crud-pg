@@ -53,6 +53,10 @@ class UserController {
       return res.status(400).json({ error: "User not found" });
     }
 
+    if (user.id != req.userId) {
+      return res.status(401).json({ error: "This account isn't yours" });
+    }
+
     user.name = name;
     user.username = username;
     user.password = password;
@@ -70,6 +74,10 @@ class UserController {
 
     if (!user) {
       return res.status(400).json({ error: "User not found" });
+    }
+
+    if (user.id != req.userId) {
+      return res.status(401).json({ error: "This account isn't yours" });
     }
 
     await repo.softRemove(user);
