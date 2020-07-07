@@ -57,6 +57,10 @@ class UserController {
       return res.status(401).json({ error: "This account isn't yours" });
     }
 
+    if (await repo.findOne({ where: { username } })) {
+      return res.status(400).json({ error: "Username already exists" });
+    }
+
     user.name = name;
     user.username = username;
     user.password = password;
