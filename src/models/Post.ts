@@ -24,9 +24,8 @@ export default class Post {
   })
   content: string;
 
-  @ManyToOne((type) => User, (posts) => Post, {
+  @ManyToOne((type) => User, (user) => user.posts, {
     nullable: false,
-    cascade: ["update", "remove", "soft-remove"],
   })
   user: User;
 

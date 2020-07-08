@@ -40,7 +40,9 @@ export default class User {
 
   password: string | null;
 
-  @OneToMany((type) => Post, (user) => User)
+  @OneToMany((type) => Post, (post) => post.user, {
+    cascade: ["update", "remove", "soft-remove"],
+  })
   posts: Post[];
 
   @CreateDateColumn()

@@ -33,11 +33,18 @@ class UserController {
 
     const id = req.params.id;
 
-    const user = await repo.findOne({ where: { id } });
+    const user = await repo.findOne({
+      where: { id },
+      relations: ["posts"],
+    });
 
     if (!user) {
       return res.status(400).json({ error: "User not found" });
     }
+
+    const filteredPosts = user.posts.filter((post) => post.deleted_at === null);
+
+    user.posts = filteredPosts;
 
     return res.json(user);
   }
@@ -70,11 +77,14 @@ class UserController {
     return res.json(user);
   }
   async delete(req: Request, res: Response): Promise<Response> {
-    const repo = getCustomRepository(UserRepository);
+    const userRepo = getCustomRepository(UserRepository);
 
     const id = req.params.id;
 
-    const user = await repo.findOne({ where: { id } });
+    const user = await userRepo.findOne({
+      where: { id },
+      relations: ["posts"],
+    });
 
     if (!user) {
       return res.status(400).json({ error: "User not found" });
@@ -84,7 +94,7 @@ class UserController {
       return res.status(401).json({ error: "This account isn't yours" });
     }
 
-    await repo.softRemove(user);
+    await userRepo.softRemove(user);
 
     return res.json();
   }
