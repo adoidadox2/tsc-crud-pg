@@ -3,9 +3,12 @@ import handle from "express-async-handler";
 import UserController from "../controllers/UserController";
 import auth from "../middlewares/auth";
 
+import { celebrate } from "celebrate";
+import User from "../validators/User";
+
 const userRouter = Router();
 
-userRouter.post("/", handle(UserController.store));
+userRouter.post("/", celebrate(User), handle(UserController.store));
 
 userRouter.use(auth);
 

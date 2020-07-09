@@ -1,9 +1,10 @@
 import "reflect-metadata";
 import "dotenv/config";
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import routes from "./routes";
 import cors from "cors";
 import "./database";
+import { errors } from "celebrate";
 class App {
   public server: express.Application;
 
@@ -21,7 +22,16 @@ class App {
   routes() {
     this.server.use(routes);
   }
-  exception() {}
+  exception() {
+    this.server.use(errors());
+    this.server.use(
+      async (err: Error, req: Request, res: Response, next: NextFunction) => {
+        return res
+          .status(err.status || 500)
+          .json({ error: "Internal Server Error" });
+      }
+    );
+  }
 }
 
 export default new App().server;
