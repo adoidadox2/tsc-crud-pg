@@ -1,6 +1,7 @@
 import { promisify } from "util";
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+import authConfig from "../config/auth";
 
 interface TokenPayload {
   id: String;
@@ -18,7 +19,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   const [, token] = authHeader.split(" ");
 
   try {
-    const decoded = await promisify(jwt.verify)(token, "tsc");
+    const decoded = await promisify(jwt.verify)(token, authConfig.secret);
 
     const { id } = decoded as TokenPayload;
 

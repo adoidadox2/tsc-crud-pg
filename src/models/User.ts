@@ -12,6 +12,7 @@ import {
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import Post from "./Post";
+import authConfig from "../config/auth";
 @Entity("user")
 export default class User {
   constructor(name: string, username: string, password: string) {
@@ -65,8 +66,8 @@ export default class User {
   }
 
   generateToken() {
-    return jwt.sign({ id: this.id }, "tsc", {
-      expiresIn: "1d",
+    return jwt.sign({ id: this.id }, authConfig.secret, {
+      expiresIn: authConfig.ttl,
     });
   }
 }
