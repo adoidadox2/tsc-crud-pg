@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import "dotenv/config";
+import helmet from "helmet";
 import express, { Request, Response, NextFunction } from "express";
 import routes from "./routes";
 import cors from "cors";
@@ -16,8 +17,8 @@ class App {
     this.exception();
   }
   middlewares() {
-    this.server.use(express.json());
     this.server.use(cors());
+    this.server.use(express.json());
   }
   routes() {
     this.server.use(routes);
