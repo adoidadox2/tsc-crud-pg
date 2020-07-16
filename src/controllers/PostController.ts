@@ -2,6 +2,7 @@ import { getRepository } from "typeorm";
 import Post from "../models/Post";
 import { Request, Response } from "express";
 import User from "../models/User";
+import AppError from "../errors/AppError";
 
 class PostController {
   async index(req: Request, res: Response): Promise<Response> {
@@ -18,13 +19,13 @@ class PostController {
     const { title, content } = req.body;
 
     if (await postRepo.findOne({ where: { title } })) {
-      return res.status(400).json({ error: "Title already exists" });
+      throw new AppError("Title already exists", 400);
     }
 
     const user = await userRepo.findOne({ where: { id: req.userId } });
 
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      throw new AppError("User not found", 400);
     }
 
     const post = postRepo.create({ title, content, user });
@@ -41,7 +42,7 @@ class PostController {
     const post = await repo.findOne({ where: { id }, relations: ["user"] });
 
     if (!post) {
-      return res.status(400).json({ error: "Post not found" });
+      throw new AppError("Post not found", 400);
     }
 
     return res.json(post);
@@ -55,15 +56,15 @@ class PostController {
     const post = await repo.findOne({ where: { id }, relations: ["user"] });
 
     if (!post) {
-      return res.status(400).json({ error: "Post not found" });
+      throw new AppError("Post not found", 400);
     }
 
     if (post.user.id != req.userId) {
-      return res.status(401).json({ error: "This post isn't yours" });
+      throw new AppError("This post isn't yours", 401);
     }
 
     if (await repo.findOne({ where: { title } })) {
-      return res.status(400).json({ error: "Title already exists" });
+      throw new AppError("Title already exists", 400);
     }
 
     post.title = title;
@@ -81,11 +82,11 @@ class PostController {
     const post = await repo.findOne({ where: { id }, relations: ["user"] });
 
     if (!post) {
-      return res.status(400).json({ error: "Post not found" });
+      throw new AppError("Post not found", 400);
     }
 
     if (post.user.id != req.userId) {
-      return res.status(401).json({ error: "This post isn't yours" });
+      throw new AppError("This post isn't yours", 401);
     }
 
     await repo.softRemove(post);
