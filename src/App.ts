@@ -6,6 +6,7 @@ import routes from "./routes";
 import cors from "cors";
 import "./database";
 import { errors } from "celebrate";
+import AppError from "./errors/AppError";
 class App {
   public server: express.Application;
 
@@ -28,9 +29,15 @@ class App {
     this.server.use(errors());
     this.server.use(
       async (err: Error, req: Request, res: Response, next: NextFunction) => {
-        return res
-          .status(err.status || 500)
-          .json({ error: "Internal Server Error" });
+        if (err instanceof AppError) {
+          return res.status(err.statusCode).json({
+            status: "error",
+            message: err.message,
+          });
+        }
+
+        console.log(err);
+        return res.status(500).json({ error: "Internal Server Error" });
       }
     );
   }
