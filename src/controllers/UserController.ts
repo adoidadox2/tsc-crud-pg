@@ -2,6 +2,7 @@ import { getRepository, getCustomRepository } from "typeorm";
 import User from "../models/User";
 import { Request, Response } from "express";
 import UserRepository from "../repositories/UserRepository";
+import AppError from "../errors/AppError";
 
 class UserController {
   async index(req: Request, res: Response): Promise<Response> {
@@ -17,7 +18,7 @@ class UserController {
     const { name, username, password } = req.body;
 
     if (await repo.findOne({ where: { username } })) {
-      return res.status(400).json({ error: "User already exists" });
+      throw new AppError("User already exists", 400);
     }
 
     const user = repo.createUser(name, username, password);
@@ -39,7 +40,7 @@ class UserController {
     });
 
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      throw new AppError("User not found", 400);
     }
 
     const filteredPosts = user.posts.filter((post) => post.deleted_at === null);
@@ -57,15 +58,15 @@ class UserController {
     const user = await repo.findOne({ where: { id } });
 
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      throw new AppError("User not found", 400);
     }
 
     if (user.id != req.userId) {
-      return res.status(401).json({ error: "This account isn't yours" });
+      throw new AppError("This account isn't yours", 401);
     }
 
     if (await repo.findOne({ where: { username } })) {
-      return res.status(400).json({ error: "Username already exists" });
+      throw new AppError("Username already exists", 400);
     }
 
     user.name = name;
@@ -87,11 +88,11 @@ class UserController {
     });
 
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      throw new AppError("User not found", 400);
     }
 
     if (user.id != req.userId) {
-      return res.status(401).json({ error: "This account isn't yours" });
+      throw new AppError("This account isn't yours", 401);
     }
 
     await userRepo.softRemove(user);
