@@ -24,7 +24,7 @@ Technologies that I used to develop this API
 - [TypeScript](https://www.typescriptlang.org/)
 - [Express](https://expressjs.com/pt-br/)
 - [TypeORM](https://typeorm.io/#/)
-- [JWT-token](https://jwt.io/)
+- [JWT](https://jwt.io/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Helmet](https://helmetjs.github.io/)
 - [Celebrate](https://github.com/arb/celebrate)
