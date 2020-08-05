@@ -14,7 +14,7 @@
 
 Project - https://github.com/adoidadox2/selectFullStackDeveloper 
 
-Made now in typescript and typeorm for future revisions
+Made now in typescript and typeorm for future revisions (used soft delete)
 
 ## Technologies :rocket::
 
