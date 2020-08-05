@@ -1,8 +1,8 @@
 import { getRepository } from "typeorm";
 import Post from "../models/Post";
 import { Request, Response } from "express";
-import User from "../models/User";
 import AppError from "../errors/AppError";
+import CreatePostService from "../services/CreatePostService";
 
 class PostController {
   async index(req: Request, res: Response): Promise<Response> {
@@ -13,26 +13,12 @@ class PostController {
     return res.json(posts);
   }
   async store(req: Request, res: Response): Promise<Response> {
-    const postRepo = getRepository(Post);
-    const userRepo = getRepository(User);
+    const result = await CreatePostService.execute({
+      userId: req.userId,
+      body: req.body,
+    });
 
-    const { title, content } = req.body;
-
-    if (await postRepo.findOne({ where: { title } })) {
-      throw new AppError("Title already exists", 400);
-    }
-
-    const user = await userRepo.findOne({ where: { id: req.userId } });
-
-    if (!user) {
-      throw new AppError("User not found", 400);
-    }
-
-    const post = postRepo.create({ title, content, user });
-
-    await postRepo.save(post);
-
-    return res.json(post);
+    return res.json(result);
   }
   async show(req: Request, res: Response): Promise<Response> {
     const repo = getRepository(Post);
