@@ -7,6 +7,7 @@ import {
   UpdateDateColumn,
   BeforeInsert,
   OneToMany,
+  BeforeUpdate,
 } from "typeorm";
 
 import jwt from "jsonwebtoken";
@@ -55,6 +56,7 @@ export default class User {
   @DeleteDateColumn()
   deleted_at: Date;
 
+  @BeforeUpdate()
   @BeforeInsert()
   async upPass() {
     this.password_hash = await bcrypt.hash(this.password, 8);
